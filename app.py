@@ -6,10 +6,7 @@ from datetime import datetime
 
 import requests
 import streamlit as st
-from dotenv import load_dotenv
 from PIL import Image
-
-load_dotenv()
 
 API_URL = "https://api.perplexity.ai/chat/completions"
 DEFAULT_MODEL = "sonar-pro"
@@ -37,28 +34,11 @@ def init_state():
         # Zoom options
         "include_auto_zoom": False,
         "zoom_fraction": 0.5,
-        "authenticated": False,
     }
     for k, v in defaults.items():
         if k not in st.session_state:
             st.session_state[k] = v
 
-def login_screen():
-    st.title("🪨 GIA: guided image analysis")
-    st.caption("Instructor pilot: enter the access password to use this app.")
-
-    pw = st.text_input("Access password", type="password")
-
-    if pw:
-        correct_pw = os.getenv("APP_PASSWORD", "").strip()
-        if not correct_pw:
-            st.error("APP_PASSWORD is not set in your .env file.")
-        elif pw == correct_pw:
-            st.session_state.authenticated = True
-            st.success("Logged in. Loading the app...")
-            st.rerun()
-        else:
-            st.error("Incorrect password. Please check with your instructor.")
 
 def reset_app():
     keep_model = st.session_state.get("model", DEFAULT_MODEL)
@@ -392,11 +372,6 @@ def save_conversation_to_file():
 st.set_page_config(page_title="We Are Dougalien", page_icon="🪨", layout="wide")
 init_state()
 
-# Simple login gate
-if not st.session_state.authenticated:
-    login_screen()
-    st.stop()
-
 st.title("🪨 GIA: guided image analysis")
 st.caption(
     "Upload a specimen image, start the analysis, then chat with the AI tutor to refine your interpretation."
@@ -482,27 +457,27 @@ with left:
             use_container_width=True,
         )
 
-        if st.session_state.include_auto_zoom and st.session_state.image_bytes:
-            try:
-                img = Image.open(BytesIO(st.session_state.image_bytes))
-                w, h = img.size
-                frac = st.session_state.zoom_fraction
-                frac = max(0.1, min(frac, 1.0))
+    if st.session_state.include_auto_zoom and st.session_state.image_bytes:
+        try:
+            img = Image.open(BytesIO(st.session_state.image_bytes))
+            w, h = img.size
+            frac = st.session_state.zoom_fraction
+            frac = max(0.1, min(frac, 1.0))
 
-                cw, ch = int(w * frac), int(h * frac)
-                left_crop = (w - cw) // 2
-                top_crop = (h - ch) // 2
-                right_crop = left_crop + cw
-                bottom_crop = top_crop + ch
-                crop_center = img.crop((left_crop, top_crop, right_crop, bottom_crop))
+            cw, ch = int(w * frac), int(h * frac)
+            left_crop = (w - cw) // 2
+            top_crop = (h - ch) // 2
+            right_crop = left_crop + cw
+            bottom_crop = top_crop + ch
+            crop_center = img.crop((left_crop, top_crop, right_crop, bottom_crop))
 
-                st.image(
-                    crop_center,
-                    caption=f"Auto zoom (center {int(frac * 100)}% of image)",
-                    use_container_width=True,
-                )
-            except Exception:
-                pass
+            st.image(
+                crop_center,
+                caption=f"Auto zoom (center {int(frac * 100)}% of image)",
+                use_container_width=True,
+            )
+        except Exception:
+            pass
 
     st.markdown("### Student input (optional)")
 
