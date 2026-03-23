@@ -369,10 +369,10 @@ def save_conversation_to_file():
 
 # ---------- Streamlit UI ----------
 
-st.set_page_config(page_title="We are dougalien (www.dougalien.com)", page_icon="🪨", layout="wide")
+st.set_page_config(page_title="GIA: Guided Image Analyzer", page_icon="🪨", layout="wide")
 init_state()
 
-st.title("🪨 GIA: Guided Image Analysis")
+st.title("🪨 GIA: Guided Image Analysis. Created by We are dougalien (www.dougalien.com)")
 st.caption(
     "Upload a specimen image, start the analysis, then chat with the AI tutor to refine your interpretation."
 )
