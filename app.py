@@ -369,7 +369,7 @@ def save_conversation_to_file():
 
 # ---------- Streamlit UI ----------
 
-st.set_page_config(page_title="We Are Dougalien", page_icon="🪨", layout="wide")
+st.set_page_config(page_title="We Are Dougalien (www.dougalien.com)", page_icon="🪨", layout="wide")
 init_state()
 
 st.title("🪨 GIA: guided image analysis")
