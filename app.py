@@ -374,8 +374,8 @@ init_state()
 
 st.title("🪨 GIA: Guided Image Analysis")
 st.caption(
-    "Created by We are dougalien (www.dougalien.com)",
-    "Upload a specimen image, start the analysis, then chat with the AI tutor to refine your interpretation."
+    "Created by We are dougalien (www.dougalien.com)."
+    " Upload a specimen image, start the analysis, then chat with the AI tutor to refine your interpretation."
 )
 
 with st.sidebar:
